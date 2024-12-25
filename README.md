@@ -24,17 +24,25 @@ That’s it! 🎉
 ## API's to Test Metrics Data
 
 **Add item**
-curl -X POST -H "User-ID: user1" -H "Content-Type: application/json" \
+```bash 
+  curl -X POST -H "User-ID: user1" -H "Content-Type: application/json" \
   -d '{"id":"1","name":"Product 1","price":29.99,"quantity":2}' \
   http://localhost:8080/cart/add
+```
 
 **View cart**
+```bash
 curl -H "User-ID: user1" http://localhost:8080/cart/view
+```
 
 **Remove item**
+```bash
 curl -X POST -H "User-ID: user1" -H "Content-Type: application/json" \
   -d '{"id":"1"}' \
   http://localhost:8080/cart/remove
+```
 
 **View cart again to verify removal**
+```bash
 curl -H "User-ID: user1" http://localhost:8080/cart/view
+```
