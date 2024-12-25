@@ -1,4 +1,3 @@
-// main.go
 package main
 
 import (
@@ -53,6 +52,7 @@ var (
     carts = make(map[string]*Cart)
 )
 
+// Opentelemetry Initiator
 func initOpenTelemetry(ctx context.Context) (func(), error) {
     res, err := resource.New(ctx,
         resource.WithAttributes(
@@ -95,6 +95,7 @@ func initOpenTelemetry(ctx context.Context) (func(), error) {
     return cleanup, nil
 }
 
+//Trace Initiator Opentelemetry
 func initTracer(ctx context.Context, res *resource.Resource) (*sdktrace.TracerProvider, error) {
     traceExporter, err := otlptracegrpc.New(
         ctx,
@@ -114,7 +115,7 @@ func initTracer(ctx context.Context, res *resource.Resource) (*sdktrace.TracerPr
 
     return tracerProvider, nil
 }
-
+// Metric Initiator Opentelemetry
 func initMetrics(ctx context.Context, res *resource.Resource) (*sdkmetric.MeterProvider, error) {
     metricExporter, err := otlpmetricgrpc.New(
         ctx,
@@ -152,7 +153,6 @@ func initMetrics(ctx context.Context, res *resource.Resource) (*sdkmetric.MeterP
         return nil, fmt.Errorf("failed to create metrics: %v, %v", err1, err2)
     }
 
-    // Create observable gauge for cart items
     var err3 error
     cartItemsGauge, err3 = meter.Int64ObservableGauge(
         "cart_items",
@@ -195,7 +195,6 @@ func updateCartItemsCount(userID string, delta int64) {
     }
 }
 
-// Handler functions remain the same as before, but use updateCartItemsCount instead of directly using cartItemsGauge
 
 func addToCartHandler(c *gin.Context) {
     ctx := c.Request.Context()
@@ -258,8 +257,6 @@ func addToCartHandler(c *gin.Context) {
     c.JSON(200, cart)
 }
 
-// Similar updates for removeFromCartHandler and viewCartHandler...
-// Add this after the addToCartHandler function and before the main function
 
 func removeFromCartHandler(c *gin.Context) {
     ctx := c.Request.Context()
